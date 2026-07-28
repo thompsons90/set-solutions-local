@@ -1,0 +1,949 @@
+/* ============================================================
+   SET SOLUTIONS — LOCAL / SIMPLIFIED SITE
+   Mobile-first CSS. Built for Gen X+ / older, less tech-fluent
+   visitors: bigger type, higher contrast, big tap targets,
+   minimal motion, single-column reading flow at every width.
+
+   Same brand tokens as the main SET Solutions site — this file
+   is self-contained (no cross-repo dependency), colors/fonts
+   copied over so the two sites stay visually consistent.
+   File: styles.css
+============================================================ */
+
+:root {
+  /* --- Brand: Primary Blue --- */
+  --primary-blue: #0066cc;
+  --primary-blue-dark: #0057b8;
+  --primary-blue-deeper: #004f9e;
+
+  /* --- Brand: Accent Purple --- */
+  --accent-purple: #7b52ab;
+  --accent-purple-dark: #6040a0;
+
+  /* --- Text (contrast bumped slightly higher than the main site
+     on purpose — older eyes need a bit more) --- */
+  --text-main: #262626;
+  --text-muted: #4a4a4a;
+  --text-on-dark: #ffffff;
+  --text-on-dark-muted: rgba(255, 255, 255, 0.82);
+
+  /* --- Backgrounds --- */
+  --bg-page: #f8f9fa;
+  --bg-white: #ffffff;
+  --bg-subtle: #eef1f4;
+
+  /* --- Borders --- */
+  --border-subtle: #dde1e3;
+  --border-strong: #b7bec2;
+
+  /* --- Gradients (dark sections) --- */
+  --grad-dark: linear-gradient(160deg, #0057b8 0%, #4e2d8c 100%);
+
+  /* --- Typography — same families as main brand --- */
+  --font-display: "Cormorant Garant", Georgia, serif;
+  --font-body: "Lato", Helvetica, Arial, sans-serif;
+
+  /* --- Layout — narrow, document-like column. This is
+     intentional: a wide marketing grid reads as "busy" to this
+     audience, a single readable column reads as trustworthy. --- */
+  --max-w: 720px;
+  --section-pad: 3rem 1.25rem;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --tap-min: 52px;
+
+  --transition: 0.2s ease;
+}
+
+/* ============================================================
+   RESET & BASE
+============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Bigger base size than a typical marketing site — readability
+     over density for this audience. */
+  font-size: 18px;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  color: var(--text-main);
+  background: var(--bg-page);
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+a {
+  color: inherit;
+}
+button {
+  font-family: inherit;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  background: var(--primary-blue);
+  color: #fff;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 700;
+  z-index: 9999;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Consistent, visible focus state everywhere — no invisible-focus
+   traps for keyboard/switch users. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--primary-blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   TYPOGRAPHY
+============================================================ */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  line-height: 1.25;
+  color: var(--text-main);
+  font-weight: 700;
+}
+h1 {
+  font-size: clamp(2rem, 8vw, 2.75rem);
+}
+h2 {
+  font-size: clamp(1.6rem, 6vw, 2.1rem);
+}
+h3 {
+  font-size: 1.25rem;
+}
+p {
+  font-size: 1rem;
+}
+
+.eyebrow {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-blue);
+  margin-bottom: 0.6rem;
+}
+.eyebrow.section-eyebrow--light {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.section-lead {
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  font-size: 1.05rem;
+}
+.section-lead--light {
+  color: var(--text-on-dark-muted);
+}
+
+/* ============================================================
+   LAYOUT
+============================================================ */
+.section-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: var(--section-pad);
+  text-align: center;
+}
+
+/* ============================================================
+   BUTTONS
+============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: var(--tap-min);
+  padding: 0.9rem 1.75rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: var(--transition);
+  width: 100%;
+}
+
+.btn-call {
+  background: var(--primary-blue);
+  color: #fff;
+  border-color: var(--primary-blue);
+}
+.btn-call:hover {
+  background: var(--primary-blue-deeper);
+  border-color: var(--primary-blue-deeper);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--primary-blue-deeper);
+  border-color: var(--primary-blue);
+}
+.btn-secondary:hover {
+  background: rgba(0, 102, 204, 0.08);
+}
+
+/* ============================================================
+   HEADER — sticky, minimal. One job: get you to the phone.
+============================================================ */
+#site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.98);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: box-shadow 0.3s ease;
+}
+#site-header.scrolled {
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+}
+
+.header-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.header-logo img {
+  width: 32px;
+  height: 32px;
+}
+.header-logo span {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--primary-blue-deeper);
+}
+
+.header-call-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary-blue);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  min-height: 44px;
+  transition: var(--transition);
+}
+.header-call-btn:hover {
+  background: var(--primary-blue-deeper);
+}
+.call-icon {
+  font-size: 1.1rem;
+}
+.call-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.call-label {
+  font-size: 0.8rem;
+}
+/* Hide the printed number in the header on very small screens so
+   the button stays compact — it's still fully readable in the
+   hero and contact section. */
+.call-number {
+  display: none;
+  font-size: 0.7rem;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero {
+  background: var(--bg-white);
+}
+.hero-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 2.75rem;
+  text-align: center;
+}
+
+.hero-photo {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1.25rem;
+  border: 4px solid var(--bg-subtle);
+}
+
+.hero h1 {
+  margin-bottom: 0.9rem;
+}
+
+.hero-sub {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  max-width: 34ch;
+  margin: 0 auto 1.75rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.hero-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   VIDEO — click-to-load facade
+============================================================ */
+.video-section {
+  background: var(--bg-subtle);
+}
+
+.video-facade {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-top: 1.5rem;
+  background: #111;
+  cursor: pointer;
+  border: none;
+  width: 100%;
+}
+.video-facade::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.18);
+}
+.video-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.video-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease;
+}
+.video-play-btn:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+.video-facade.is-loaded {
+  cursor: default;
+}
+.video-facade iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.video-fallback {
+  margin-top: 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.video-fallback a {
+  color: var(--primary-blue);
+  font-weight: 700;
+}
+
+/* ============================================================
+   SERVICES — stacked rows, not cards
+============================================================ */
+.services-section {
+  background: var(--bg-white);
+}
+
+.service-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.service-row:first-of-type {
+  border-top: none;
+  padding-top: 2rem;
+}
+
+.service-icon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--bg-subtle);
+  color: var(--primary-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.service-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.service-text h3 {
+  margin-bottom: 0.4rem;
+}
+.service-text p {
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   ABOUT
+============================================================ */
+.about-section {
+  background: var(--bg-subtle);
+}
+.about-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.about-photo {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1.5rem;
+}
+.about-text {
+  text-align: left;
+}
+.about-text .eyebrow,
+.about-text h2 {
+  text-align: center;
+}
+.about-text p {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+.about-verse {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-main) !important;
+  border-left: 3px solid var(--accent-purple);
+  padding-left: 1rem;
+  margin-top: 1.25rem;
+}
+
+/* ============================================================
+   HOW IT WORKS
+============================================================ */
+.how-section {
+  background: var(--bg-white);
+}
+.how-steps {
+  list-style: none;
+  text-align: left;
+  margin-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+.how-steps li {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.how-step-num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2rem;
+  color: var(--primary-blue);
+  opacity: 0.35;
+  line-height: 1;
+  flex-shrink: 0;
+  min-width: 2.2rem;
+}
+.how-steps h3 {
+  margin-bottom: 0.3rem;
+}
+.how-steps p {
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   TESTIMONIALS
+============================================================ */
+.testimonials-section {
+  background: var(--bg-subtle);
+}
+.stars {
+  color: #b8860b;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.6rem;
+}
+blockquote {
+  text-align: left;
+  margin-top: 1.5rem;
+}
+.testimonial-big {
+  background: var(--bg-white);
+  border-left: 4px solid var(--primary-blue);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+.testimonial-big p {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.testimonial-small {
+  background: var(--bg-white);
+  border-left: 4px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+.testimonial-small p {
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  color: var(--text-muted);
+}
+blockquote cite {
+  display: block;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+/* ============================================================
+   PRICING
+============================================================ */
+.pricing-section {
+  background: var(--grad-dark);
+}
+.pricing-section h2 {
+  color: #fff;
+}
+.pricing-list {
+  list-style: none;
+  margin-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  text-align: left;
+}
+.pricing-list li {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.pricing-list strong {
+  color: #fff;
+  font-size: 1.05rem;
+}
+.pricing-list span {
+  color: var(--text-on-dark-muted);
+  font-size: 0.95rem;
+}
+
+/* ============================================================
+   FAQ
+============================================================ */
+.faq-section {
+  background: var(--bg-white);
+}
+.faq-list {
+  margin-top: 1.5rem;
+  text-align: left;
+}
+.faq-item {
+  border-bottom: 1px solid var(--border-subtle);
+}
+.faq-item:first-child {
+  border-top: 1px solid var(--border-subtle);
+}
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 1.25rem 0;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: var(--tap-min);
+}
+.faq-chevron {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  transition:
+    transform 0.3s ease,
+    border-color 0.2s;
+}
+.faq-item.open .faq-chevron {
+  transform: rotate(180deg);
+  border-color: var(--primary-blue);
+  color: var(--primary-blue);
+}
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+.faq-item.open .faq-answer {
+  max-height: 400px;
+}
+.faq-answer-inner {
+  padding-bottom: 1.25rem;
+  color: var(--text-muted);
+  font-size: 0.98rem;
+}
+
+/* ============================================================
+   CONTACT
+============================================================ */
+.contact-section {
+  background: var(--grad-dark);
+}
+.contact-section h2 {
+  color: #fff;
+}
+.contact-phone-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 64px;
+  margin-top: 1.75rem;
+  background: #fff;
+  color: var(--primary-blue-deeper);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.4rem;
+  border-radius: var(--radius-md);
+  transition: var(--transition);
+}
+.contact-phone-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+.contact-hours {
+  margin-top: 0.6rem;
+  color: var(--text-on-dark-muted);
+  font-size: 0.9rem;
+}
+
+.contact-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 2rem 0 1.5rem;
+  color: var(--text-on-dark-muted);
+  font-size: 0.85rem;
+}
+.contact-divider::before,
+.contact-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-on-dark-muted);
+  margin-bottom: 0.4rem;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: #fff;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+  -webkit-appearance: none;
+}
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.16);
+}
+.form-group textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.form-submit-btn {
+  width: 100%;
+  min-height: var(--tap-min);
+  background: #fff;
+  color: var(--primary-blue-deeper);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 0.5rem;
+}
+.form-submit-btn:hover {
+  background: #e8f0fa;
+}
+
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #fff;
+}
+.form-success-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.form-success h3 {
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+.form-success p {
+  color: var(--text-on-dark-muted);
+}
+
+.contact-towns {
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: var(--text-on-dark-muted);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+#site-footer {
+  background: #1a1a1a;
+  padding: 2.5rem 1.25rem;
+  text-align: center;
+}
+.footer-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.footer-logo {
+  margin: 0 auto 0.75rem;
+}
+.footer-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #fff;
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+}
+.footer-nap {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.9;
+}
+.footer-nap a {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: underline;
+}
+.footer-nap a:hover {
+  color: #fff;
+}
+.footer-crosslink {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+.footer-crosslink a {
+  color: rgba(255, 255, 255, 0.6);
+}
+.footer-crosslink a:hover {
+  color: #fff;
+}
+.footer-copy {
+  margin-top: 1.25rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================================
+   BREAKPOINTS — mobile is the default above; these only ADD
+   layout richness at larger widths, never remove readability.
+============================================================ */
+
+/* Small tablets and large phones */
+@media (min-width: 480px) {
+  .call-number {
+    display: block;
+  }
+}
+
+/* Tablets */
+@media (min-width: 640px) {
+  :root {
+    --section-pad: 4rem 1.5rem;
+  }
+
+  .hero-actions {
+    flex-direction: row;
+    justify-content: center;
+  }
+  .hero-actions .btn {
+    width: auto;
+  }
+
+  .service-row {
+    flex-direction: row;
+    text-align: left;
+    gap: 1.25rem;
+  }
+
+  .contact-phone-btn {
+    width: auto;
+    padding: 0 3rem;
+  }
+}
+
+/* Small desktop */
+@media (min-width: 900px) {
+  .hero-photo {
+    width: 170px;
+    height: 170px;
+  }
+
+  .about-inner {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 3rem;
+    text-align: left;
+  }
+  .about-photo {
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+  .about-text .eyebrow,
+  .about-text h2 {
+    text-align: left;
+  }
+}
